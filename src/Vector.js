@@ -29,12 +29,22 @@ class Vector {
 	mag() {
 		return Math.sqrt(this.x ** 2 + this.y ** 2);
 	}
+
+    // magnitude squared
+	magSquared() {
+        return this.x**2 + this.y**2;
+    }
 	// multiplies a vector by a scalar
 	scale(scalar) {
 		this.x *= scalar;
 		this.y *= scalar;
 		return this;
 	}
+    // adds a vector to this vector
+	add(vec) {
+        this.x += vec.x;
+        this.y += vec.y;
+    }
     // scale that clones,scales, and then returns the scaled vector
 	scaleClone(scalar) {
         return this.clone().scale(scalar);
@@ -52,6 +62,10 @@ class Vector {
     // function that computes the distance between the vector and a given vector
 	dist(vec) {
         return Math.sqrt((this.x - vec.x)**2 + (this.y - vec.y)**2);
+    }
+
+    static subtract(v1, v2) {
+        return new Vector(v1.x - v2.x, v1.y - v2.y);
     }
 }
 
