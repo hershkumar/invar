@@ -1,16 +1,17 @@
 import Vector from "./Vector.js";
 
 class Particle {
-  constructor(position, radius) {
+  constructor(position, velocity, radius) {
     this.position = position;
-    this.oldPosition = position;
-    this.radius = radius;
+    this.oldPosition = new Vector(position.x + (velocity.x || 0), position.y + (velocity.y || 0));
+    this.radius = radius || 5;
     this.color = "#2cb42c";
     this.mass = 1;
     this.static = false;
     this.hidden = false;
     this.constForces = [];
     this.varForces = [];
+    this.friction = .90;
    }
 
   // add a force that acts every single frame
@@ -42,10 +43,10 @@ class Particle {
   }
   // function that updates the position of the particle
   update() {
+    // if its pinned in place, the update doesn't change the position
     if (this.static) { return; }
-
-    let velocity = Vector.subtract(this.position, this.oldPosition);
-    //TODO multiply by decay/friction factor
+    // v = (x - x_o) * decay_factor
+    let velocity = Vector.subtract(this.position, this.oldPosition).scale(this.friction);
     this.oldPosition.set(this.position.x, this.position.y);
     this.position.add(velocity);
     // apply all the forces acting on the particle

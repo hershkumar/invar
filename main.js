@@ -6,13 +6,13 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 
-let gravForce = new Vector(0,10);
+let gravForce = new Vector(0,1);
 
 // set up main graphics loop
 let particles = [];
 let bonds = [];
 
-particles.push(new Particle(new Vector(100,100),5));
+particles.push(new Particle(new Vector(100,100),new Vector(50,0), 5));
 particles.push(new Particle(new Vector(200,100),5));
 particles.push(new Particle(new Vector(200,200),5));
 particles.push(new Particle(new Vector(100,200),5));
@@ -22,12 +22,12 @@ bonds.push(new Bond(particles[1], particles[2]));
 bonds.push(new Bond(particles[2], particles[3]));
 bonds.push(new Bond(particles[3], particles[0]));
 bonds.push(new Bond(particles[0], particles[2]));
+bonds.push(new Bond(particles[1], particles[3]));
 
 for (let p of particles) {
   p.addConstForce(gravForce);
 }
 
-//particles[0].addConstForce(new Vector(1,0));
 
 function animate() {
   // first clear the screen
@@ -41,18 +41,14 @@ function animate() {
       b.update();
     }
   }
-
-  for (let p of particles){
-    p.update();
-    p.render(ctx);
-  }
   for (let b of bonds) {
     b.update();
     b.render(ctx);
   }
-
-
-
+  for (let p of particles){
+    p.update();
+    p.render(ctx);
+  }
 
 
   requestAnimationFrame(animate);
